@@ -1,6 +1,6 @@
 # Size Tracker
 
-### Author Ernestas Okunevič
+### Author: Ernestas Okunevič
 
 ## App Idea:
 #### This is a weight tracking app that sends personalized messages to the user every week, 
