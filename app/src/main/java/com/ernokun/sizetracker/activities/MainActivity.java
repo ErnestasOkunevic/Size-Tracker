@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.entities.Weight;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Weight> weights) {
                 // update RecyclerView
+                Toast.makeText(MainActivity.this, "It worked", Toast.LENGTH_LONG).show();
             }
         });
     }
