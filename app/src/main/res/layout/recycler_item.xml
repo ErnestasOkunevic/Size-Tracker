@@ -30,13 +30,12 @@
         android:id="@+id/year_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="2dp"
         android:text="2018"
         android:textColor="#ffffff"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/day_month_id"
-        app:layout_constraintStart_toStartOf="@+id/day_month_id"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/day_month_id" />
 
     <TextView
