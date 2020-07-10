@@ -50,10 +50,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
+
+            // Changes the current fragment to the selected one.
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, selectedFragment)
                     .commit();
 
+
+            // True - should highlight the selected fragment in
+            // the bottom navigation bar/
             return true;
         }
     };
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Gets reference to the instance of the view model
         weightViewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(
                         this.getApplication())).get(WeightViewModel.class);
@@ -80,20 +86,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Self-explanatory
+        // Self-explanatory.
         prepareBottomNavigationBar();
 
     }
 
+    // Self-explanatory.
     private void prepareBottomNavigationBar() {
         bottomNav = findViewById(R.id.bottom_navigation_bar_id);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        // Sets the home fragment to be selected when the app opens
+
+        // Opens the home fragment screen when the app is launched.
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new HomeFragment())
                 .commit();
 
+
+        // Highlights the Home selection in the bottom navigation bar.
         bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
     }
 
