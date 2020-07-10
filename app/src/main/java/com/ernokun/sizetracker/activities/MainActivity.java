@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             Fragment selectedFragment = null;
 
+            // Which fragment should get shown.
             switch (menuItem.getItemId()) {
                 case R.id.nav_home:
                     selectedFragment = new HomeFragment();
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             // True - should highlight the selected fragment in
-            // the bottom navigation bar/
+            // the bottom navigation bar.
             return true;
         }
     };
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Gets reference to the instance of the view model
+        // Gets reference to the instance of the view model.
         weightViewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(
                         this.getApplication())).get(WeightViewModel.class);
