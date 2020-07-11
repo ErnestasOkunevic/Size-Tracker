@@ -7,20 +7,32 @@
     android:background="@drawable/background">
 
     <TextView
-        android:id="@+id/home_fragment_name_id"
-        android:layout_width="wrap_content"
+        android:id="@+id/home_fragment_textview_id"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:textColor="#ffffff"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="50dp"
-        android:text="Home"/>
+        android:text="Home"
+        android:background="@drawable/background"
+        android:textAlignment="center"
+        android:textColor="@color/neon_purple"
+        android:textSize="24dp" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weight_recycler_view_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/home_fragment_name_id"/>
+        android:layout_below="@id/graph_replacement_id" />
+
+    <ImageView
+        android:id="@+id/graph_replacement_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@id/home_fragment_textview_id"
+        app:srcCompat="@drawable/ic_launcher_background" />
 </RelativeLayout>

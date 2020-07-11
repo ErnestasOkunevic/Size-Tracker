@@ -6,17 +6,55 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
+
     <TextView
-        android:id="@+id/add_fragment_name_id"
+        android:id="@+id/add_fragment_textview_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/background"
+        android:text="Add weight"
+        android:textAlignment="center"
+        android:textColor="@color/neon_purple"
+        android:textSize="24dp" />
+
+    <ImageView
+        android:id="@+id/logo_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:textColor="#ffffff"
+        android:layout_below="@id/add_fragment_textview_id"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="50dp"
-        android:text="Add weight"/>
+        app:srcCompat="@drawable/ic_launcher_background" />
 
+    <EditText
+        android:id="@+id/weight_edittext_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_id"
+        android:layout_alignRight="@id/logo_id"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="Weight"
+        android:inputType="numberDecimal"
+        android:textColor="#ffffff"
+        android:textColorHint="#888888"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/date_edittext_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weight_edittext_id"
+        android:layout_alignLeft="@id/weight_edittext_id"
+        android:layout_alignRight="@id/weight_edittext_id"
+        android:layout_marginTop="30dp"
+        android:focusable="false"
+        android:text="dd/mm/yy"
+        android:textColor="#888888"
+        android:textSize="24sp" />
 
 
 </RelativeLayout>

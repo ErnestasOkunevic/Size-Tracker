@@ -1,10 +1,13 @@
 package com.ernokun.sizetracker.databases;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.ernokun.sizetracker.daos.WeightDao;
 import com.ernokun.sizetracker.entities.Weight;
@@ -24,4 +27,30 @@ public abstract class WeightDatabase extends RoomDatabase {
 
         return instance;
     }
+
+    private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            new PopulateDbAsyncTask(instance).execute();
+        }
+    };
+
+    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private WeightDao weightDao;
+
+        private PopulateDbAsyncTask(WeightDatabase db) {
+            weightDao = db.weightDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for (int i = 0; i < 15000; i++)
+                weightDao.insert(new Weight(i, i*1.5, "date"+i));
+
+            return null;
+        }
+    }
+
 }

@@ -8,13 +8,14 @@
 
     <TextView
         android:id="@+id/settings_fragment_name_id"
-        android:layout_width="wrap_content"
+        android:background="@drawable/background"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:textColor="#ffffff"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="50dp"
-        android:text="Settings"/>
+        android:text="Settings"
+        android:textAlignment="center"
+        android:textColor="@color/neon_purple"
+        android:textSize="24dp" />
 
 </RelativeLayout>
