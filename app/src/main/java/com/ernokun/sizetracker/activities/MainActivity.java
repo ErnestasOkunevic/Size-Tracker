@@ -25,7 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddFragment.AddFragmentListener {
 
     // The bottom navigation bar.
     private BottomNavigationView bottomNav;
@@ -34,15 +34,21 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private SettingsFragment settingsFragment;
 
+    private WeightViewModel weightViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Gets reference to the instance of the view model.
+        weightViewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(
+                        MainActivity.this.getApplication())).get(WeightViewModel.class);
+
         // Self-explanatory.
         prepareBottomNavigationBar();
-
     }
 
     // Self-explanatory.
@@ -67,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_add:
-//                         new AddFragment().show(getSupportFragmentManager(), "Add fragment TAG");
-//                         return false;
-//                        if (addFragment == null)
                         addFragment = new AddFragment();
 
                         selectedFragment = addFragment;
@@ -96,7 +99,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // open the home fragment by default.
+        openHomeFragment();
+    }
 
+    @Override
+    public void onWeightAdded(Weight weight) {
+        weightViewModel.insert(weight);
+
+        openHomeFragment();
+    }
+
+    private void openHomeFragment() {
         // Opens the home fragment screen when the app is launched.
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, homeFragment)
@@ -106,5 +120,4 @@ public class MainActivity extends AppCompatActivity {
         // Highlights the Home selection in the bottom navigation bar.
         bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
     }
-
 }

@@ -48,6 +48,11 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
     };
 
 
+    public Weight getWeightAt(int position) {
+        return getItem(position);
+    }
+
+
     @NonNull
     @Override
     public WeightHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,7 +71,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         String[] currentDate = currentWeight.getDate().split("-");
 
 
-        String currentMonth = MONTHS[Integer.parseInt(currentDate[1])];
+        String currentMonth = MONTHS[Integer.parseInt(currentDate[1])-1];
         String currentDay = "";
 
         if (currentDate[2].indexOf("0") == 0)

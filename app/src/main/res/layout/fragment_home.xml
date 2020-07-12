@@ -34,5 +34,5 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_below="@id/home_fragment_textview_id"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/ic_launcher_foreground" />
 </RelativeLayout>

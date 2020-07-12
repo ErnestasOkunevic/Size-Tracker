@@ -46,9 +46,7 @@ public abstract class WeightDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            for (int i = 0; i < 15000; i++)
-                weightDao.insert(new Weight(i, i*1.5, "date"+i));
-
+            //
             return null;
         }
     }

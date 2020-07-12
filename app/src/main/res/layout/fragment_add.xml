@@ -52,9 +52,36 @@
         android:layout_alignRight="@id/weight_edittext_id"
         android:layout_marginTop="30dp"
         android:focusable="false"
-        android:text="dd/mm/yy"
-        android:textColor="#888888"
+        android:hint="dd/mm/yy"
+        android:textColorHint="#888888"
+        android:textColor="#ffffff"
         android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/save_button_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date_edittext_id"
+        android:layout_alignParentRight="true"
+        android:text="Save"
+        android:textColor="#ffffff"
+        android:background="@drawable/bottom_nav_bar_background"
+        android:layout_marginTop="50dp"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/kg_lbs_selection_button_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/weight_edittext_id"
+        android:layout_alignLeft="@id/save_button_id"
+        android:layout_alignTop="@id/weight_edittext_id"
+        android:layout_alignRight="@id/save_button_id"
+        android:textSize="24sp"
+        android:textColor="#ffffff"
+        android:text="kg"
+        android:background="@drawable/background"
+        android:textAlignment="center"/>
 
 
 </RelativeLayout>
