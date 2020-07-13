@@ -2,10 +2,10 @@ package com.ernokun.sizetracker.activities.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,12 +25,6 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -90,23 +84,27 @@ public class HomeFragment extends Fragment {
         dataPoints.setAnimated(true);
 
         graph.addSeries(dataPoints);
+        graph.setTitle("Your weight history");
+        graph.setHorizontalScrollBarEnabled(true);
+        graph.setCursorMode(true);
     }
 
     private LineGraphSeries<DataPoint> getDataPoints() {
         int weighCount = weightAdapter.getWeightCount();
 
-        DataPoint[] dataPoints = new DataPoint[4];
+        DataPoint[] dataPoints = new DataPoint[weighCount];
 
-        // This graph will only use up to the 4 newest weights
-        if (weighCount > 4)
-            weighCount = 4;
 
-        for (int i = 0; i < weighCount; i++) {
+        int currentIndex = 0;
+        for (int i = weighCount - 1; i >= 0; i--) {
             Weight currentWeight = weightAdapter.getWeightAt(i);
+            Log.d("ME", "I didn't crash when i was " + i + " and current index was " + currentIndex);
 
-            DataPoint currentDatapoint = new DataPoint(i, currentWeight.getWeight_kg());
+            DataPoint currentDatapoint = new DataPoint(currentIndex + 1, currentWeight.getWeight_kg());
 
-            dataPoints[i] = currentDatapoint;
+
+            dataPoints[currentIndex++] = currentDatapoint;
+
         }
 
 
