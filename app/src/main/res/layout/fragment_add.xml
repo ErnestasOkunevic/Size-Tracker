@@ -21,11 +21,11 @@
 
     <ImageView
         android:id="@+id/logo_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@id/add_fragment_textview_id"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/logopic" />
 
     <EditText
         android:id="@+id/weight_edittext_id"

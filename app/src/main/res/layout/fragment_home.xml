@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:text="Home"
+        android:layout_marginBottom="35dp"
         android:background="@drawable/background"
+        android:text="Home"
         android:textAlignment="center"
         android:textColor="@color/neon_purple"
         android:textSize="24dp" />
@@ -23,16 +23,29 @@
         android:id="@+id/weight_recycler_view_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/graph_replacement_id" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/graph_id"
+        android:background="@drawable/border"/>
 
-    <ImageView
-        android:id="@+id/graph_replacement_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph_id"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_below="@id/home_fragment_textview_id"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/bottom_nav_bar_background"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="35dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kg"
+        android:layout_marginLeft="20dp"
+        android:layout_above="@id/graph_id"
+        android:layout_alignLeft="@id/graph_id"/>
+
 </RelativeLayout>

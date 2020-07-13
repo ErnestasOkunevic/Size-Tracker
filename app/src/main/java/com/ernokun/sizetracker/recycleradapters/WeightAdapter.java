@@ -16,7 +16,10 @@ import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.activities.MainActivity;
 import com.ernokun.sizetracker.entities.Weight;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 
 public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolder> {
@@ -52,6 +55,10 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         return getItem(position);
     }
 
+    public int getWeightCount() {
+        return getItemCount();
+    }
+
 
     @NonNull
     @Override
@@ -71,7 +78,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         String[] currentDate = currentWeight.getDate().split("-");
 
 
-        String currentMonth = MONTHS[Integer.parseInt(currentDate[1])-1];
+        String currentMonth = MONTHS[Integer.parseInt(currentDate[1]) - 1];
         String currentDay = "";
 
         if (currentDate[2].indexOf("0") == 0)
@@ -82,7 +89,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         holder.day_month_textview.setText(currentDay + " of " + currentMonth);
         holder.year_textview.setText(currentDate[0]);
 
-        if(shouldBeCyan)
+        if (shouldBeCyan)
             holder.weight_textview.setTextColor(Color.parseColor("#4deeea"));
         else
             holder.weight_textview.setTextColor(Color.parseColor("#f000ff"));
