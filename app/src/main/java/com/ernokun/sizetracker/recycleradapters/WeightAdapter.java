@@ -7,19 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ernokun.sizetracker.R;
-import com.ernokun.sizetracker.activities.MainActivity;
 import com.ernokun.sizetracker.entities.Weight;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 
 public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolder> {
@@ -58,7 +53,6 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
     public int getWeightCount() {
         return getItemCount();
     }
-
 
     @NonNull
     @Override
