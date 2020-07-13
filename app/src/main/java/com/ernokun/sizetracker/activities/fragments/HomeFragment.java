@@ -37,6 +37,10 @@ public class HomeFragment extends Fragment {
 
     private GraphView graph;
 
+    private boolean shouldBeKilograms = true;
+
+
+
 
     @Nullable
     @Override
@@ -46,15 +50,15 @@ public class HomeFragment extends Fragment {
         recyclerView = v.findViewById(R.id.weight_recycler_view_id);
         graph = v.findViewById(R.id.graph_id);
 
-        prepareRecyclerView(v);
+        prepareRecyclerView(shouldBeKilograms);
         prepareViewModel();
         enableSwipeToDelete();
 
         return v;
     }
 
-    private void prepareRecyclerView(View v) {
-        weightAdapter = new WeightAdapter();
+    private void prepareRecyclerView(boolean shouldBeKilograms) {
+        weightAdapter = new WeightAdapter(shouldBeKilograms);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(weightAdapter);
@@ -85,7 +89,6 @@ public class HomeFragment extends Fragment {
 
         graph.addSeries(dataPoints);
         graph.setTitle("Your weight history");
-        graph.setHorizontalScrollBarEnabled(true);
         graph.setCursorMode(true);
     }
 
@@ -94,19 +97,20 @@ public class HomeFragment extends Fragment {
 
         DataPoint[] dataPoints = new DataPoint[weighCount];
 
-
         int currentIndex = 0;
         for (int i = weighCount - 1; i >= 0; i--) {
             Weight currentWeight = weightAdapter.getWeightAt(i);
-            Log.d("ME", "I didn't crash when i was " + i + " and current index was " + currentIndex);
 
-            DataPoint currentDatapoint = new DataPoint(currentIndex + 1, currentWeight.getWeight_kg());
+            double weight;
+            if (shouldBeKilograms)
+                weight = currentWeight.getWeight_kg();
+            else
+                weight = currentWeight.getWeight_lbs();
 
+            DataPoint currentDatapoint = new DataPoint(currentIndex + 1, weight);
 
             dataPoints[currentIndex++] = currentDatapoint;
-
         }
-
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
 
@@ -144,4 +148,8 @@ public class HomeFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
     }
 
+
+    public void changeUnit() {
+        shouldBeKilograms = !shouldBeKilograms;
+    }
 }

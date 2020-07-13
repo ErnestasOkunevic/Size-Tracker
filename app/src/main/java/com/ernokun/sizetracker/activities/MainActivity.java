@@ -25,7 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AddFragment.AddFragmentListener {
+public class MainActivity extends AppCompatActivity implements AddFragment.AddFragmentListener, SettingsFragment.SettingsListener {
 
     // The bottom navigation bar.
     private BottomNavigationView bottomNav;
@@ -119,5 +119,14 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
 
         // Highlights the Home selection in the bottom navigation bar.
         bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
+    }
+
+    @Override
+    public void changeSetting(String command) {
+        switch (command) {
+            case SettingsFragment.COMMAND_CHANGE_UNIT:
+                homeFragment.changeUnit();
+                break;
+        }
     }
 }

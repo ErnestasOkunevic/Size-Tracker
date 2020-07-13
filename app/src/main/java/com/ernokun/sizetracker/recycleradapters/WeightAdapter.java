@@ -14,16 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.entities.Weight;
 
-import java.util.List;
 
 
 public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolder> {
-    public WeightAdapter() {
+    public WeightAdapter(boolean shouldBeKilograms) {
         super(DIFF_CALLBACK);
+
         shouldBeCyan = false;
+
+        this.shouldBeKilograms = shouldBeKilograms;
     }
 
     private boolean shouldBeCyan;
+    private boolean shouldBeKilograms;
 
     public static String[] MONTHS = {
             "January", "February", "March", "April",
@@ -66,10 +69,23 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
     public void onBindViewHolder(@NonNull WeightHolder holder, int position) {
         Weight currentWeight = getItem(position);
 
-        String date = currentWeight.getDate();
-        String weight_text = String.valueOf(currentWeight.getWeight_kg());
+        setDate(holder, currentWeight.getDate());
+        setColor(holder);
 
-        String[] currentDate = currentWeight.getDate().split("-");
+        setWeight(holder, currentWeight);
+    }
+
+    private void setColor(@NonNull WeightHolder holder) {
+        if (shouldBeCyan)
+            holder.weight_textview.setTextColor(Color.parseColor("#4deeea"));
+        else
+            holder.weight_textview.setTextColor(Color.parseColor("#f000ff"));
+
+        shouldBeCyan = !shouldBeCyan;
+    }
+
+    private void setDate(@NonNull WeightHolder holder, String date) {
+        String[] currentDate = date.split("-");
 
 
         String currentMonth = MONTHS[Integer.parseInt(currentDate[1]) - 1];
@@ -82,17 +98,30 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
 
         holder.day_month_textview.setText(currentDay + " of " + currentMonth);
         holder.year_textview.setText(currentDate[0]);
+    }
 
-        if (shouldBeCyan)
-            holder.weight_textview.setTextColor(Color.parseColor("#4deeea"));
-        else
-            holder.weight_textview.setTextColor(Color.parseColor("#f000ff"));
+    private void setWeight(@NonNull WeightHolder holder, Weight currentWeight) {
+        if (shouldBeKilograms) {
+            double weight_kg = currentWeight.getWeight_kg();
+            weight_kg = round(weight_kg, 1);
 
+            holder.weight_textview.setText(weight_kg + " kg");
+        }
+        else {
+            double weight_lbs = currentWeight.getWeight_lbs();
+            weight_lbs = round(weight_lbs, 1);
 
-        shouldBeCyan = !shouldBeCyan;
+            holder.weight_textview.setText(weight_lbs + " lbs");
+        }
+    }
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-        holder.weight_textview.setText(weight_text + " kg");
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
 
