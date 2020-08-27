@@ -1,3 +1,5 @@
+## This is still a work in progress project !
+
 # Size Tracker
 
 ### Author: Ernestas Okunevič
