@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
                 break;
             case SettingsFragment.COMMAND_SAVE_WEIGHTS_TO_FILE:
                 // Shows a toast with the filePath.
-                showToast("FilePath: " + filePath);
+                showToast("Saved to: " + filePath);
 
                 // Saves all weights to the given filePath.
                 homeFragment.saveWeightsToFile(filePath);

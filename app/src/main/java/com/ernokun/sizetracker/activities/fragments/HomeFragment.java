@@ -1,7 +1,7 @@
 package com.ernokun.sizetracker.activities.fragments;
 
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.entities.Weight;
 import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
+import com.ernokun.sizetracker.utils.MyColors;
 import com.ernokun.sizetracker.viewmodels.WeightViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -38,11 +39,13 @@ public class HomeFragment extends Fragment {
     // Gets data from repository and displays it in recycler view.
     private WeightViewModel weightViewModel;
 
+
+    // The graph.
     private GraphView graph;
 
+
+    // Should the data be currently shown in kilograms or lbs.
     private boolean shouldBeKilograms = true;
-
-
 
 
     @Nullable
@@ -60,14 +63,16 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
+    // Every time the kilograms or lbs setting is changed - a new
+    // weight adapter with the required weight unit is created.
     private void prepareRecyclerView(boolean shouldBeKilograms) {
         weightAdapter = new WeightAdapter(shouldBeKilograms);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(weightAdapter);
-
     }
 
+    // The viewmodel lets us use livedata from the database.
     private void prepareViewModel() {
         // Gets reference to the instance of the view model.
         weightViewModel = new ViewModelProvider(this,
@@ -86,20 +91,62 @@ public class HomeFragment extends Fragment {
     }
 
     private void setGraphData() {
-        LineGraphSeries<DataPoint> dataPoints = getDataPoints();
-
-        dataPoints.setAnimated(true);
-
-        graph.addSeries(dataPoints);
-        graph.setTitle("Your weight history");
-        graph.setTitleTextSize(78);
-
-    }
-
-    private LineGraphSeries<DataPoint> getDataPoints() {
         // How many data points we will need in the array.
         int weightCount = weightAdapter.getWeightCount();
 
+        // The maximum amount of weights in the graph.
+        final int MAX_WEIGHTS = weightCount;
+
+//        final int MAX_WEIGHTS = 12;
+//
+//        if (weightCount > MAX_WEIGHTS)
+//            weightCount = MAX_WEIGHTS;
+
+        LineGraphSeries<DataPoint> dataPoints = getDataPoints(weightCount);
+
+
+        int my_white_color = Color.parseColor(MyColors.MY_WHITE);
+
+        dataPoints.setDrawBackground(true);
+        dataPoints.setAnimated(true);
+        dataPoints.setColor(my_white_color);
+        dataPoints.setBackgroundColor(Color.parseColor(MyColors.MY_DARK));
+
+        graph.addSeries(dataPoints);
+
+        graph.setTitle("Your " + weightCount + " weights");
+        graph.setTitleTextSize(78);
+        graph.setTitleColor(my_white_color);
+
+        graph.getGridLabelRenderer().setGridColor(my_white_color);
+
+        graph.getGridLabelRenderer().setLabelVerticalWidth(75);
+        graph.getGridLabelRenderer().setLabelHorizontalHeight(35);
+
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(MAX_WEIGHTS + 1);
+
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScalableY(true);
+
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(my_white_color);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(my_white_color);
+
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor(my_white_color);
+        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(my_white_color);
+
+        String verticalAxisTitle = (shouldBeKilograms) ?  "kg" : "lbs";
+        graph.getGridLabelRenderer().setVerticalAxisTitle(verticalAxisTitle);
+
+        String horizontalAxisTitle = "week";
+        graph.getGridLabelRenderer().setHorizontalAxisTitle(horizontalAxisTitle);
+    }
+
+    private LineGraphSeries<DataPoint> getDataPoints(int weightCount) {
         DataPoint[] dataPoints = new DataPoint[weightCount];
 
         // Create data points from the weight data.
@@ -113,7 +160,7 @@ public class HomeFragment extends Fragment {
             else
                 weight = currentWeight.getWeight_lbs();
 
-            DataPoint currentDatapoint = new DataPoint(currentIndex + 1, weight);
+            DataPoint currentDatapoint = new DataPoint(currentIndex+1, weight);
 
             dataPoints[currentIndex++] = currentDatapoint;
         }

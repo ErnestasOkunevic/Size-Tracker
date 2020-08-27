@@ -4,10 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <!-- too much work to use them as resources, so just copied their values
-     into the WeightAdapter class -->
     <color name="neon_cyan">#469BFE</color>
     <color name="neon_purple">#973EDF</color>
-
     <color name="white">#EBEAEA</color>
 </resources>

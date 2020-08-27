@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.entities.Weight;
-
+import com.ernokun.sizetracker.utils.MyColors;
 
 
 public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolder> {
@@ -77,9 +77,9 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
 
     private void setColor(@NonNull WeightHolder holder) {
         if (shouldBeCyan)
-            holder.weight_textview.setTextColor(Color.parseColor("#469BFE"));
+            holder.weight_textview.setTextColor(Color.parseColor(MyColors.MY_BLUE));
         else
-            holder.weight_textview.setTextColor(Color.parseColor("#973EDF"));
+            holder.weight_textview.setTextColor(Color.parseColor(MyColors.MY_PURPLE));
 
         shouldBeCyan = !shouldBeCyan;
     }
@@ -88,12 +88,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         String[] currentDate = date.split("-");
 
         String currentMonth = MONTHS[Integer.parseInt(currentDate[1]) - 1];
-        String currentDay = "";
-
-        if (currentDate[2].indexOf("0") == 0)
-            currentDay = String.valueOf(currentDate[2].charAt(1));
-        else
-            currentDay = currentDate[2];
+        String currentDay = currentDate[2];
 
         holder.day_month_textview.setText(currentDay + " of " + currentMonth);
         holder.year_textview.setText(currentDate[0]);
