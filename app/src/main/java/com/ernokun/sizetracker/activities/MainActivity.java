@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
 
     private WeightViewModel weightViewModel;
 
+    // Used for saving all of the weights to a file.
+    private String filePath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
 
         // Self-explanatory.
         prepareBottomNavigationBar();
+
+        // Sets the filePath for the "Save to file" functionality.
+        filePath = getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() + "/saved_weights.txt";
     }
 
     // Self-explanatory.
@@ -127,6 +134,17 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
             case SettingsFragment.COMMAND_CHANGE_UNIT:
                 homeFragment.changeUnit();
                 break;
+            case SettingsFragment.COMMAND_SAVE_WEIGHTS_TO_FILE:
+                // Shows a toast with the filePath.
+                showToast("FilePath: " + filePath);
+
+                // Saves all weights to the given filePath.
+                homeFragment.saveWeightsToFile(filePath);
+                break;
         }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

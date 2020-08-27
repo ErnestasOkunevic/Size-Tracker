@@ -77,16 +77,15 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
 
     private void setColor(@NonNull WeightHolder holder) {
         if (shouldBeCyan)
-            holder.weight_textview.setTextColor(Color.parseColor("#4deeea"));
+            holder.weight_textview.setTextColor(Color.parseColor("#469BFE"));
         else
-            holder.weight_textview.setTextColor(Color.parseColor("#f000ff"));
+            holder.weight_textview.setTextColor(Color.parseColor("#973EDF"));
 
         shouldBeCyan = !shouldBeCyan;
     }
 
     private void setDate(@NonNull WeightHolder holder, String date) {
         String[] currentDate = date.split("-");
-
 
         String currentMonth = MONTHS[Integer.parseInt(currentDate[1]) - 1];
         String currentDay = "";

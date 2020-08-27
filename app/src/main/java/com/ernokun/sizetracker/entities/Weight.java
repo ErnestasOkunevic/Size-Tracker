@@ -39,4 +39,9 @@ public class Weight {
     public String getDate() {
         return date;
     }
+
+    @Override
+    public String toString() {
+        return date + " : (kg) " + getWeight_kg();
+    }
 }

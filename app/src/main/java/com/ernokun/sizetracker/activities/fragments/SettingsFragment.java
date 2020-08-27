@@ -16,6 +16,7 @@ import com.ernokun.sizetracker.R;
 public class SettingsFragment extends Fragment {
 
     private Button changeWeightUnitButton;
+    private Button saveWeightsToFileButton;
 
     private SettingsListener listener;
 
@@ -24,6 +25,7 @@ public class SettingsFragment extends Fragment {
     private static final String[] BUTTON_TEXT = {"kg", "lbs"};
 
     public static final String COMMAND_CHANGE_UNIT = "CHANGE_WEIGHT_UNIT";
+    public static final String COMMAND_SAVE_WEIGHTS_TO_FILE = "COMMAND_SAVE_WEIGHTS_TO_FILE";
 
 
     public interface SettingsListener {
@@ -34,7 +36,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
+
         changeWeightUnitButton = v.findViewById(R.id.change_weight_unit_button);
+        saveWeightsToFileButton = v.findViewById(R.id.save_to_file_button);
 
         if(!currentButton_text.equals(""))
             changeWeightUnitButton.setText(currentButton_text);
@@ -45,6 +49,13 @@ public class SettingsFragment extends Fragment {
                 listener.changeSetting(COMMAND_CHANGE_UNIT);
 
                 changeButtonText(changeWeightUnitButton.getText().toString());
+            }
+        });
+
+        saveWeightsToFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.changeSetting(COMMAND_SAVE_WEIGHTS_TO_FILE);
             }
         });
 

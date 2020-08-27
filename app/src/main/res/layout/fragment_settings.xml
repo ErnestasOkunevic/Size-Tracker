@@ -4,44 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/bg_main">
 
     <TextView
         android:id="@+id/settings_fragment_name_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/background"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/fragment_name_background"
+        android:fontFamily="@font/oswald_bold"
         android:text="Settings"
         android:textAlignment="center"
         android:textColor="@color/neon_purple"
         android:textSize="24dp" />
+
+    <ImageView
+        android:id="@+id/circle_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_fragment_name_id"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/settings_circle_side_blue" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/settings_fragment_name_id"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="35dp"
+        android:layout_alignLeft="@+id/circle_one"
+        android:layout_marginLeft="25dp"
+        android:fontFamily="@font/oswald_light"
         android:text="Current weight unit:"
-        android:textColor="@color/neon_cyan"
+        android:textColor="@color/white"
         android:textSize="24sp" />
 
     <Button
         android:id="@+id/change_weight_unit_button"
-        android:layout_width="49dp"
-        android:layout_height="33dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@id/textView2"
         android:layout_alignBottom="@id/textView2"
-        android:background="@drawable/background"
-        android:textColor="@color/neon_cyan"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/oswald_light"
         android:text="kg"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/circle_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_fragment_name_id"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignTop="@id/textview3"
+        android:background="@drawable/settings_circle_side_blue" />
+
+    <TextView
+        android:id="@+id/textview3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView2"
+        android:layout_alignLeft="@id/textView2"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/oswald_light"
+        android:text="Save weights to file:"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/save_to_file_button"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:layout_alignLeft="@+id/change_weight_unit_button"
+        android:layout_alignRight="@+id/change_weight_unit_button"
+        android:layout_alignBottom="@+id/textview3"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/oswald_light"
+        android:text="SAVE"
+        android:textColor="@color/white"
         android:textSize="12sp" />
 
 </RelativeLayout>

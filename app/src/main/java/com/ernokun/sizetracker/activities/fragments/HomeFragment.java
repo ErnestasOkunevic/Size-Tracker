@@ -1,8 +1,8 @@
 package com.ernokun.sizetracker.activities.fragments;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +25,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -52,7 +55,7 @@ public class HomeFragment extends Fragment {
 
         prepareRecyclerView(shouldBeKilograms);
         prepareViewModel();
-        enableSwipeToDelete();
+        prepareSwipeToDelete();
 
         return v;
     }
@@ -89,16 +92,19 @@ public class HomeFragment extends Fragment {
 
         graph.addSeries(dataPoints);
         graph.setTitle("Your weight history");
-        graph.setCursorMode(true);
+        graph.setTitleTextSize(78);
+
     }
 
     private LineGraphSeries<DataPoint> getDataPoints() {
-        int weighCount = weightAdapter.getWeightCount();
+        // How many data points we will need in the array.
+        int weightCount = weightAdapter.getWeightCount();
 
-        DataPoint[] dataPoints = new DataPoint[weighCount];
+        DataPoint[] dataPoints = new DataPoint[weightCount];
 
+        // Create data points from the weight data.
         int currentIndex = 0;
-        for (int i = weighCount - 1; i >= 0; i--) {
+        for (int i = weightCount - 1; i >= 0; i--) {
             Weight currentWeight = weightAdapter.getWeightAt(i);
 
             double weight;
@@ -117,7 +123,7 @@ public class HomeFragment extends Fragment {
         return series;
     }
 
-    private void enableSwipeToDelete() {
+    private void prepareSwipeToDelete() {
         // Adds the swipe to delete functionality.
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
@@ -151,5 +157,31 @@ public class HomeFragment extends Fragment {
 
     public void changeUnit() {
         shouldBeKilograms = !shouldBeKilograms;
+    }
+
+    public void saveWeightsToFile(String filePath) {
+        List<Weight> currentList = weightAdapter.getCurrentList();
+
+        MyFileSaver.saveToFile(filePath, currentList);
+    }
+
+
+    private static class MyFileSaver {
+
+        private MyFileSaver() {}
+
+        private static PrintWriter getFileWriter(String filePath) {
+            try { return new PrintWriter(new BufferedWriter(new FileWriter(filePath, false))); }
+            catch (Exception e) { return null; }
+        }
+
+        public static void saveToFile(String filePath, List<Weight> currentList) {
+            PrintWriter fileWriter = getFileWriter(filePath);
+
+            for (Weight weight : currentList)
+                fileWriter.println(weight);
+
+            fileWriter.close();
+        }
     }
 }

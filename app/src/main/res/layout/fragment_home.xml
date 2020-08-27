@@ -1,55 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/bg_main">
 
     <TextView
         android:id="@+id/home_fragment_textview_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/background"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/fragment_name_background"
+        android:fontFamily="@font/oswald_bold"
         android:text="Home"
         android:textAlignment="center"
         android:textColor="@color/neon_purple"
         android:textSize="24dp" />
 
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph_id"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/home_fragment_textview_id"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:background="@drawable/bg_graph" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weight_recycler_view_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_below="@id/graph_id"
-        android:background="@drawable/border"/>
-
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph_id"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="-5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="35dp"
         android:background="@drawable/border" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/home_fragment_textview_id"
-        android:layout_alignLeft="@id/graph_id"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="kg"
-        android:textStyle="italic"/>
 
 </RelativeLayout>

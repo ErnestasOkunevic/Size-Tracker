@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/bg_main">
 
 
     <TextView
@@ -13,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/background"
+        android:background="@drawable/fragment_name_background"
+        android:fontFamily="@font/oswald_bold"
         android:text="Add weight"
         android:textAlignment="center"
         android:textColor="@color/neon_purple"
@@ -25,7 +25,7 @@
         android:layout_height="100dp"
         android:layout_below="@id/add_fragment_textview_id"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/logopic" />
+        app:srcCompat="@drawable/ic_logo" />
 
     <EditText
         android:id="@+id/weight_edittext_id"
@@ -37,9 +37,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="50dp"
         android:ems="10"
+        android:fontFamily="@font/oswald_light"
         android:hint="Weight"
         android:inputType="numberDecimal"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textColorHint="#888888"
         android:textSize="24sp" />
 
@@ -52,10 +53,27 @@
         android:layout_alignRight="@id/weight_edittext_id"
         android:layout_marginTop="30dp"
         android:focusable="false"
+        android:fontFamily="@font/oswald_light"
         android:hint="dd/mm/yy"
+        android:textColor="@color/white"
         android:textColorHint="#888888"
-        android:textColor="#ffffff"
         android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/kg_lbs_selection_button_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/save_button_id"
+        android:layout_alignTop="@id/weight_edittext_id"
+        android:layout_alignRight="@id/save_button_id"
+        android:layout_alignBottom="@id/weight_edittext_id"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/oswald_light"
+        android:text="kg"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
 
     <Button
         android:id="@+id/save_button_id"
@@ -63,25 +81,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/date_edittext_id"
         android:layout_alignParentRight="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button"
+        android:fontFamily="@font/oswald_light"
         android:text="Save"
-        android:textColor="#ffffff"
-        android:background="@drawable/bottom_nav_bar_background"
-        android:layout_marginTop="50dp"
-        android:layout_margin="20dp"/>
-
-    <Button
-        android:id="@+id/kg_lbs_selection_button_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/weight_edittext_id"
-        android:layout_alignLeft="@id/save_button_id"
-        android:layout_alignTop="@id/weight_edittext_id"
-        android:layout_alignRight="@id/save_button_id"
-        android:textSize="24sp"
-        android:textColor="#ffffff"
-        android:text="kg"
-        android:background="@drawable/background"
-        android:textAlignment="center"/>
-
+        android:textColor="@color/white" />
 
 </RelativeLayout>
