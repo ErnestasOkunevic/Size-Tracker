@@ -12,7 +12,13 @@ public class Weight {
     private double weight_kg;
     private double weight_lbs;
 
+
+    /***
+     * Dates are formatted like this:
+     *      yyyy-mm-dd
+     */
     private String date;
+
 
     public Weight(double weight_kg, double weight_lbs, String date) {
         this.weight_kg = weight_kg;
