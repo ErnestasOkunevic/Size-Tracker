@@ -23,13 +23,17 @@ import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
 import com.ernokun.sizetracker.utils.MyColors;
 import com.ernokun.sizetracker.viewmodels.WeightViewModel;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -98,15 +102,86 @@ public class HomeFragment extends Fragment {
     // Set the data for (and modifies the look of) the graph.
     private void setGraphData() {
 
-        // How many data points we will need in the array.
-        int weightCount = weightAdapter.getWeightCount();
+        // All of the weights stored in the database.
+        List<Weight> weightList = weightAdapter.getCurrentList();
 
         // Used multiple times so value is saved to a variable.
         int my_white_color = Color.parseColor(MyColors.MY_WHITE);
+        int my_dark_color = Color.parseColor(MyColors.MY_DARK);
+        int my_purple_color = Color.parseColor(MyColors.MY_PURPLE);
+        int my_blue_color = Color.parseColor(MyColors.MY_BLUE);
+        int my_black_color = Color.parseColor(MyColors.MY_BLACK);
+
+        List<Integer> colors = new ArrayList<>();
+
+        colors.add(Color.parseColor(MyColors.MY_PURPLE));
+        colors.add(Color.parseColor(MyColors.MY_BLUE));
 
         // TODO write the code for the graph data
-        
+        List<Entry> entries = new ArrayList<>();
 
+        int weightCount = weightList.size();
+
+        final int MAX_WEIGHT_AMOUNT = 12;
+
+        if (weightCount > MAX_WEIGHT_AMOUNT)
+            weightCount = MAX_WEIGHT_AMOUNT;
+
+        for (int i = 1; i <= weightCount; i++) {
+
+            // Reverse order.
+            Weight weight = weightList.get(weightCount - i);
+
+            double weightAmount = (shouldBeKilograms) ?
+                    weight.getWeight_kg() : weight.getWeight_lbs();
+
+            Entry entry = new Entry(i, (float) weightAmount);
+
+            entries.add(entry);
+        }
+
+        LineDataSet dataSet = new LineDataSet(entries, "Your latest " + weightCount + " sizes");
+
+        dataSet.setColor(my_blue_color);
+        dataSet.setCircleColor(my_black_color);
+        dataSet.setValueTextColor(my_white_color);
+        dataSet.setHighLightColor(my_black_color);
+        dataSet.setCircleHoleColor(my_white_color);
+
+        LineData lineData = new LineData(dataSet);
+
+        graph.setData(lineData);
+
+        String description_text = "You weighed yourself " + weightList.size() + " times";
+
+        Description description = new Description();
+
+        description.setText(description_text);
+        description.setTextColor(my_white_color);
+
+        graph.getAxisLeft().setTextColor(my_blue_color);
+        graph.getAxisRight().setTextColor(my_purple_color);
+        graph.getXAxis().setTextColor(my_white_color);
+
+        graph.getAxisLeft().setTextSize(8);
+        graph.getAxisRight().setTextSize(8);
+
+        graph.getLegend().setTextColor(my_white_color);
+
+        graph.setDescription(description);
+
+        graph.setNoDataText("Weigh yourself !");;
+        graph.setNoDataTextColor(my_white_color);
+
+        graph.setDrawGridBackground(true);
+        graph.setGridBackgroundColor(my_dark_color);
+
+        graph.setDrawBorders(true);
+        graph.setBorderColor(my_black_color);
+        graph.setBorderWidth(2);
+
+        // Refreshes the data in the graph.
+        graph.invalidate();
     }
 
 
