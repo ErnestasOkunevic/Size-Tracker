@@ -15,17 +15,15 @@
         android:text="Home"
         android:textAlignment="center"
         android:textColor="@color/neon_purple"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 
-    <com.jjoe64.graphview.GraphView
+
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/graph_id"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@id/home_fragment_textview_id"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/bg_graph" />
+        android:layout_below="@id/home_fragment_textview_id" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weight_recycler_view_id"

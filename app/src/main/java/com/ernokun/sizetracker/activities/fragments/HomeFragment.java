@@ -22,17 +22,18 @@ import com.ernokun.sizetracker.entities.Weight;
 import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
 import com.ernokun.sizetracker.utils.MyColors;
 import com.ernokun.sizetracker.viewmodels.WeightViewModel;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -46,7 +47,7 @@ public class HomeFragment extends Fragment {
     private WeightViewModel weightViewModel;
 
     // The graph.
-    private GraphView graph;
+    private LineChart graph;
 
     // TODO Makes this variable get its' value from shared preferences.
     // Should the data be currently shown in kilograms or lbs.
@@ -101,84 +102,86 @@ public class HomeFragment extends Fragment {
     // Set the data for (and modifies the look of) the graph.
     private void setGraphData() {
 
-        // How many data points we will need in the array.
-        int weightCount = weightAdapter.getWeightCount();
-
-        LineGraphSeries<DataPoint> dataPoints = getDataPoints(weightCount);
+        // All of the weights stored in the database.
+        List<Weight> weightList = weightAdapter.getCurrentList();
 
         // Used multiple times so value is saved to a variable.
         int my_white_color = Color.parseColor(MyColors.MY_WHITE);
+        int my_dark_color = Color.parseColor(MyColors.MY_DARK);
+        int my_purple_color = Color.parseColor(MyColors.MY_PURPLE);
+        int my_blue_color = Color.parseColor(MyColors.MY_BLUE);
+        int my_black_color = Color.parseColor(MyColors.MY_BLACK);
 
-        dataPoints.setDrawBackground(true);
-        dataPoints.setColor(my_white_color);
-        dataPoints.setBackgroundColor(Color.parseColor(MyColors.MY_DARK));
+        List<Integer> colors = new ArrayList<>();
 
-        graph.addSeries(dataPoints);
+        colors.add(Color.parseColor(MyColors.MY_PURPLE));
+        colors.add(Color.parseColor(MyColors.MY_BLUE));
 
-        graph.setTitle("Your weight history");
-        graph.setTitleTextSize(75);
-        graph.setTitleColor(my_white_color);
+        // TODO write the code for the graph data
+        List<Entry> entries = new ArrayList<>();
 
-        graph.getViewport().setMinX(dataPoints.getLowestValueX());
-        graph.getViewport().setMaxX(dataPoints.getHighestValueX());
-        graph.getViewport().setXAxisBoundsManual(true);
+        int weightCount = weightList.size();
 
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
+        final int MAX_WEIGHT_AMOUNT = 12;
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-        graph.getGridLabelRenderer().setHorizontalLabelsAngle(45);
+        if (weightCount > MAX_WEIGHT_AMOUNT)
+            weightCount = MAX_WEIGHT_AMOUNT;
 
-        graph.getGridLabelRenderer().setLabelVerticalWidth(65);;
+        for (int i = 1; i <= weightCount; i++) {
 
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
-        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+            // Reverse order.
+            Weight weight = weightList.get(weightCount - i);
 
-        graph.getGridLabelRenderer().setGridColor(my_white_color);
+            double weightAmount = (shouldBeKilograms) ?
+                    weight.getWeight_kg() : weight.getWeight_lbs();
 
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(my_white_color);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(my_white_color);
+            Entry entry = new Entry(i, (float) weightAmount);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitleColor(my_white_color);
-        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(my_white_color);
-
-        graph.getGridLabelRenderer().setTextSize(28);
-    }
-
-
-    // Returns data points for the graph.
-    private LineGraphSeries<DataPoint> getDataPoints(int weightCount) {
-        DataPoint[] dataPoints = new DataPoint[weightCount];
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        // Create data points from the weight data.
-        int currentIndex = 0;
-        for (int i = weightCount - 1; i >= 0; i--) {
-
-            // Newest weights will be shown at the top.
-            Weight currentWeight = weightAdapter.getWeightAt(i);
-
-            double weight_amount = (shouldBeKilograms) ?
-                    currentWeight.getWeight_kg() : currentWeight.getWeight_lbs();
-
-            Date date;
-
-            try {
-                date = simpleDateFormat.parse(currentWeight.getDate());
-            }
-            catch (ParseException e) {
-                continue;
-            }
-
-            DataPoint currentDatapoint = new DataPoint(date, weight_amount);
-
-            dataPoints[currentIndex++] = currentDatapoint;
+            entries.add(entry);
         }
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
+        LineDataSet dataSet = new LineDataSet(entries, "Your latest " + weightCount + " sizes");
 
-        return series;
+        dataSet.setColor(my_blue_color);
+        dataSet.setCircleColor(my_black_color);
+        dataSet.setValueTextColor(my_white_color);
+        dataSet.setHighLightColor(my_black_color);
+        dataSet.setCircleHoleColor(my_white_color);
+
+        LineData lineData = new LineData(dataSet);
+
+        graph.setData(lineData);
+
+        String description_text = "You weighed yourself " + weightList.size() + " times";
+
+        Description description = new Description();
+
+        description.setText(description_text);
+        description.setTextColor(my_white_color);
+
+        graph.getAxisLeft().setTextColor(my_blue_color);
+        graph.getAxisRight().setTextColor(my_purple_color);
+        graph.getXAxis().setTextColor(my_white_color);
+
+        graph.getAxisLeft().setTextSize(8);
+        graph.getAxisRight().setTextSize(8);
+
+        graph.getLegend().setTextColor(my_white_color);
+
+        graph.setDescription(description);
+
+        graph.setNoDataText("Weigh yourself !");;
+        graph.setNoDataTextColor(my_white_color);
+
+        graph.setDrawGridBackground(true);
+        graph.setGridBackgroundColor(my_dark_color);
+
+        graph.setDrawBorders(true);
+        graph.setBorderColor(my_black_color);
+        graph.setBorderWidth(2);
+
+        // Refreshes the data in the graph.
+        graph.invalidate();
     }
 
 
