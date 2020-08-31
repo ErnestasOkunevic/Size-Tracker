@@ -22,10 +22,7 @@ import com.ernokun.sizetracker.entities.Weight;
 import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
 import com.ernokun.sizetracker.utils.MyColors;
 import com.ernokun.sizetracker.viewmodels.WeightViewModel;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
+import com.github.mikephil.charting.charts.LineChart;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -46,7 +43,7 @@ public class HomeFragment extends Fragment {
     private WeightViewModel weightViewModel;
 
     // The graph.
-    private GraphView graph;
+    private LineChart graph;
 
     // TODO Makes this variable get its' value from shared preferences.
     // Should the data be currently shown in kilograms or lbs.
@@ -104,81 +101,12 @@ public class HomeFragment extends Fragment {
         // How many data points we will need in the array.
         int weightCount = weightAdapter.getWeightCount();
 
-        LineGraphSeries<DataPoint> dataPoints = getDataPoints(weightCount);
-
         // Used multiple times so value is saved to a variable.
         int my_white_color = Color.parseColor(MyColors.MY_WHITE);
 
-        dataPoints.setDrawBackground(true);
-        dataPoints.setColor(my_white_color);
-        dataPoints.setBackgroundColor(Color.parseColor(MyColors.MY_DARK));
+        // TODO write the code for the graph data
+        
 
-        graph.addSeries(dataPoints);
-
-        graph.setTitle("Your weight history");
-        graph.setTitleTextSize(75);
-        graph.setTitleColor(my_white_color);
-
-        graph.getViewport().setMinX(dataPoints.getLowestValueX());
-        graph.getViewport().setMaxX(dataPoints.getHighestValueX());
-        graph.getViewport().setXAxisBoundsManual(true);
-
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScalableY(true);
-
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-        graph.getGridLabelRenderer().setHorizontalLabelsAngle(45);
-
-        graph.getGridLabelRenderer().setLabelVerticalWidth(65);;
-
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
-        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
-
-        graph.getGridLabelRenderer().setGridColor(my_white_color);
-
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(my_white_color);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(my_white_color);
-
-        graph.getGridLabelRenderer().setVerticalAxisTitleColor(my_white_color);
-        graph.getGridLabelRenderer().setHorizontalAxisTitleColor(my_white_color);
-
-        graph.getGridLabelRenderer().setTextSize(28);
-    }
-
-
-    // Returns data points for the graph.
-    private LineGraphSeries<DataPoint> getDataPoints(int weightCount) {
-        DataPoint[] dataPoints = new DataPoint[weightCount];
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        // Create data points from the weight data.
-        int currentIndex = 0;
-        for (int i = weightCount - 1; i >= 0; i--) {
-
-            // Newest weights will be shown at the top.
-            Weight currentWeight = weightAdapter.getWeightAt(i);
-
-            double weight_amount = (shouldBeKilograms) ?
-                    currentWeight.getWeight_kg() : currentWeight.getWeight_lbs();
-
-            Date date;
-
-            try {
-                date = simpleDateFormat.parse(currentWeight.getDate());
-            }
-            catch (ParseException e) {
-                continue;
-            }
-
-            DataPoint currentDatapoint = new DataPoint(date, weight_amount);
-
-            dataPoints[currentIndex++] = currentDatapoint;
-        }
-
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
-
-        return series;
     }
 
 
