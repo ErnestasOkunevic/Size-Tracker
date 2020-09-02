@@ -2,16 +2,12 @@ package com.ernokun.sizetracker.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.ernokun.sizetracker.R;
@@ -19,12 +15,9 @@ import com.ernokun.sizetracker.activities.fragments.AddFragment;
 import com.ernokun.sizetracker.activities.fragments.HomeFragment;
 import com.ernokun.sizetracker.activities.fragments.SettingsFragment;
 import com.ernokun.sizetracker.entities.Weight;
-import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
+import com.ernokun.sizetracker.utils.MyResources;
 import com.ernokun.sizetracker.viewmodels.WeightViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AddFragment.AddFragmentListener, SettingsFragment.SettingsListener {
 
@@ -40,11 +33,16 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
     // Used for saving all of the weights to a file.
     private String filePath;
 
+    // Resource reference for the fragments and their components.
+    private MyResources myResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (myResources == null)
+            myResources = new MyResources(getResources());
 
         // Gets reference to the instance of the view model.
         weightViewModel = new ViewModelProvider(this,
@@ -56,13 +54,15 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
 
         // Sets the filePath for the "Save to file" functionality.
         filePath = getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() + "/saved_weights.txt";
+
     }
 
-    // Self-explanatory.
+
+    // Opens the homefragment by default and sets up a listener for the nav bar.
     private void prepareBottomNavigationBar() {
         bottomNav = findViewById(R.id.bottom_navigation_bar_id);
 
-        homeFragment = new HomeFragment();
+        homeFragment = new HomeFragment(myResources);
 
         // On click listener for bottom navigation bar.
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
                         if (homeFragment == null)
-                            homeFragment = new HomeFragment();
+                            homeFragment = new HomeFragment(myResources);
 
                         selectedFragment = homeFragment;
                         break;
@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
         openHomeFragment();
     }
 
+
+    // What happens when the add button is pressed in the add fragment.
     @Override
     public void onWeightAdded(Weight weight) {
         weightViewModel.insert(weight);
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
         openHomeFragment();
     }
 
+
+    // Opens the home fragment when a new weight is inserted in the add fragment.
     private void openHomeFragment() {
         // Opens the home fragment screen when the app is launched.
         getSupportFragmentManager().beginTransaction()
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
         // Highlights the Home selection in the bottom navigation bar.
         bottomNav.getMenu().findItem(R.id.nav_home).setChecked(true);
     }
+
 
     @Override
     public void changeSetting(String command) {
@@ -143,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
                 break;
         }
     }
+
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();

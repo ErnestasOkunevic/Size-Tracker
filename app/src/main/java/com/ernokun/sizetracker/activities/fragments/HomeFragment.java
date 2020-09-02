@@ -1,7 +1,6 @@
 package com.ernokun.sizetracker.activities.fragments;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.entities.Weight;
 import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
-import com.ernokun.sizetracker.utils.MyColors;
+import com.ernokun.sizetracker.utils.MyResources;
 import com.ernokun.sizetracker.viewmodels.WeightViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -37,6 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
+    // How many weights can be shown on the graph.
+    private final int MAX_WEIGHT_AMOUNT = 12;
+
 
     // Recycler view and adapter:
     // used to display weight data to the user.
@@ -52,6 +53,16 @@ public class HomeFragment extends Fragment {
     // TODO Makes this variable get its' value from shared preferences.
     // Should the data be currently shown in kilograms or lbs.
     private boolean shouldBeKilograms = true;
+
+
+    // Reference to the resource object.
+    private MyResources myResources;
+
+
+    // Used to pass reference to resource object/
+    public HomeFragment(MyResources myResources) {
+        this.myResources = myResources;
+    }
 
 
     @Nullable
@@ -73,7 +84,7 @@ public class HomeFragment extends Fragment {
     // Every time the kilograms or lbs setting is changed - a new
     // weight adapter with the required weight unit is created.
     private void prepareRecyclerView(boolean shouldBeKilograms) {
-        weightAdapter = new WeightAdapter(shouldBeKilograms);
+        weightAdapter = new WeightAdapter(shouldBeKilograms, myResources);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(weightAdapter);
@@ -93,95 +104,128 @@ public class HomeFragment extends Fragment {
             public void onChanged(List<Weight> weights) {
                 // update RecyclerView
                 weightAdapter.submitList(weights);
-                setGraphData();
+                setupGraph();
             }
         });
     }
 
 
     // Set the data for (and modifies the look of) the graph.
-    private void setGraphData() {
-
+    private void setupGraph() {
         // All of the weights stored in the database.
         List<Weight> weightList = weightAdapter.getCurrentList();
 
-        // Used multiple times so value is saved to a variable.
-        int my_white_color = Color.parseColor(MyColors.MY_WHITE);
-        int my_dark_color = Color.parseColor(MyColors.MY_DARK);
-        int my_purple_color = Color.parseColor(MyColors.MY_PURPLE);
-        int my_blue_color = Color.parseColor(MyColors.MY_BLUE);
-        int my_black_color = Color.parseColor(MyColors.MY_BLACK);
-
-        List<Integer> colors = new ArrayList<>();
-
-        colors.add(Color.parseColor(MyColors.MY_PURPLE));
-        colors.add(Color.parseColor(MyColors.MY_BLUE));
-
-        // TODO write the code for the graph data
-        List<Entry> entries = new ArrayList<>();
-
+        // How many weight records currently exist in the database.
         int weightCount = weightList.size();
 
-        final int MAX_WEIGHT_AMOUNT = 12;
 
+        // Only the newest 12 weights should be shown on the graph.
         if (weightCount > MAX_WEIGHT_AMOUNT)
             weightCount = MAX_WEIGHT_AMOUNT;
 
-        for (int i = 1; i <= weightCount; i++) {
 
-            // Reverse order.
-            Weight weight = weightList.get(weightCount - i);
+        // The created data points for the graph.
+        List<Entry> entries = getEntries(weightList, weightCount);
 
-            double weightAmount = (shouldBeKilograms) ?
-                    weight.getWeight_kg() : weight.getWeight_lbs();
 
-            Entry entry = new Entry(i, (float) weightAmount);
-
-            entries.add(entry);
-        }
-
-        LineDataSet dataSet = new LineDataSet(entries, "Your latest " + weightCount + " sizes");
-
-        dataSet.setColor(my_blue_color);
-        dataSet.setCircleColor(my_black_color);
-        dataSet.setValueTextColor(my_white_color);
-        dataSet.setHighLightColor(my_black_color);
-        dataSet.setCircleHoleColor(my_white_color);
-
-        LineData lineData = new LineData(dataSet);
+        // The bundled data set for the graph.
+        LineData lineData = getLineDataSet(entries, weightCount);
 
         graph.setData(lineData);
 
-        String description_text = "You weighed yourself " + weightList.size() + " times";
+
+        // Setting description for the graph.
+        Description description = getDescription(weightList.size());
+
+        graph.setDescription(description);
+
+
+        // Customizing the look of the graph.
+        customizeGraph();
+
+
+        // Refreshes the data in the graph.
+        graph.invalidate();
+    }
+
+
+    // Creates data points for the graph.
+    private List<Entry> getEntries(List<Weight> weightList, int weightCount) {
+        // The data points for the graph.
+        List<Entry> entries = new ArrayList<>();
+
+        // Add the last twelve (or less) weights to the graph.
+        for (int i = 1; i <= weightCount; i++) {
+
+            // Reverse order, because the newest weights are at the back of the list.
+            Weight weight = weightList.get(weightCount - i);
+
+            // What weight unit should be used.
+            double weightAmount = (shouldBeKilograms) ?
+                    weight.getWeight_kg() : weight.getWeight_lbs();
+
+            // Creating the data point for the graph.
+            Entry entry = new Entry(i, (float) weightAmount);
+
+            // Adding the data point to the data point list.
+            entries.add(entry);
+        }
+
+        return entries;
+    }
+
+
+    // Sets the description for the graph.
+    private Description getDescription(int weightCount) {
+        String description_text = "You weighed yourself " + weightCount + " times";
 
         Description description = new Description();
 
         description.setText(description_text);
-        description.setTextColor(my_white_color);
+        description.setTextColor(myResources.getWhite());
 
-        graph.getAxisLeft().setTextColor(my_blue_color);
-        graph.getAxisRight().setTextColor(my_purple_color);
-        graph.getXAxis().setTextColor(my_white_color);
+        return description;
+    }
+
+
+    // Bundles up data points and creates a data set for the graph.
+    private LineData getLineDataSet(List<Entry> entries, int usedWeightCount) {
+        // Creating the data set.
+        LineDataSet dataSet = new LineDataSet(entries, ("Your latest " + usedWeightCount + " sizes"));
+
+        // Customising the look of the data set.
+        dataSet.setColor(myResources.getBlue());
+        dataSet.setCircleColor(myResources.getBlack());
+        dataSet.setValueTextColor(myResources.getWhite());
+        dataSet.setHighLightColor(myResources.getBlack());
+        dataSet.setCircleHoleColor(myResources.getWhite());
+
+        // Bundling up the data and returning it.
+        return new LineData(dataSet);
+    }
+
+
+    // Customizes the look of the graph.
+    private void customizeGraph() {
+        // Customizing the look of the graph.
+        graph.getAxisLeft().setTextColor(myResources.getBlue());
+        graph.getAxisRight().setTextColor(myResources.getPurple());
+        graph.getXAxis().setTextColor(myResources.getWhite());
 
         graph.getAxisLeft().setTextSize(8);
         graph.getAxisRight().setTextSize(8);
 
-        graph.getLegend().setTextColor(my_white_color);
-
-        graph.setDescription(description);
+        graph.getLegend().setTextColor(myResources.getWhite());
 
         graph.setNoDataText("Weigh yourself !");;
-        graph.setNoDataTextColor(my_white_color);
+        graph.setNoDataTextColor(myResources.getWhite());
 
         graph.setDrawGridBackground(true);
-        graph.setGridBackgroundColor(my_dark_color);
+        graph.setGridBackgroundColor(myResources.getDark());
 
         graph.setDrawBorders(true);
-        graph.setBorderColor(my_black_color);
+        graph.setBorderColor(myResources.getBlack());
         graph.setBorderWidth(2);
-
-        // Refreshes the data in the graph.
-        graph.invalidate();
     }
 
 

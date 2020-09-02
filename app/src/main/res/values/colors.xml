@@ -4,7 +4,10 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="neon_cyan">#469BFE</color>
-    <color name="neon_purple">#973EDF</color>
+    <color name="blue">#469BFE</color>
+    <color name="purple">#973EDF</color>
     <color name="white">#EBEAEA</color>
+    <color name="black">#000000</color>
+    <color name="dark">#434343</color>
+
 </resources>

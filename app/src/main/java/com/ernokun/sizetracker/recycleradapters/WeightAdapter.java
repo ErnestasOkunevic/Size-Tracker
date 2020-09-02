@@ -1,6 +1,6 @@
 package com.ernokun.sizetracker.recycleradapters;
 
-import android.graphics.Color;
+import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,28 +12,26 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ernokun.sizetracker.R;
+
 import com.ernokun.sizetracker.entities.Weight;
-import com.ernokun.sizetracker.utils.MyColors;
+import com.ernokun.sizetracker.utils.MyResources;
 
 
 public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolder> {
-    public WeightAdapter(boolean shouldBeKilograms) {
-        super(DIFF_CALLBACK);
+    // The months of the year.
+    public static String[] months;
 
-        shouldBeCyan = false;
+    // What color should the weight be printed in (blue or purple).
+    private boolean shouldBeBlue;
 
-        this.shouldBeKilograms = shouldBeKilograms;
-    }
-
-    private boolean shouldBeCyan;
+    // Should the weight be printed in kilograms or lbs.
     private boolean shouldBeKilograms;
 
-    public static String[] MONTHS = {
-            "January", "February", "March", "April",
-            "May", "June", "July", "August",
-            "September", "October", "November", "December"
-    };
+    // Reference to resource class object.
+    private MyResources myResources;
 
+    // Used in ListAdapter, is needed for the list adapter to be able to recognize if the list has
+    // changed or not.
     private static final DiffUtil.ItemCallback<Weight> DIFF_CALLBACK = new DiffUtil.ItemCallback<Weight>() {
         @Override
         public boolean areItemsTheSame(@NonNull Weight oldItem, @NonNull Weight newItem) {
@@ -49,13 +47,27 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
     };
 
 
+    public WeightAdapter(boolean shouldBeKilograms, MyResources myResources) {
+        super(DIFF_CALLBACK);
+
+        // Adapter gets reference to resource object for color and string resource access.
+        this.myResources = myResources;
+
+        // Saves whether the weight needs to be printed in kilograms or lbs.
+        this.shouldBeKilograms = shouldBeKilograms;
+
+        // The first weight is always purple.
+        this.shouldBeBlue = false;
+
+        months = myResources.getMonths();
+    }
+
+
+    // Used to find which weight should be deleted.
     public Weight getWeightAt(int position) {
         return getItem(position);
     }
 
-    public int getWeightCount() {
-        return getItemCount();
-    }
 
     @NonNull
     @Override
@@ -67,41 +79,49 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
 
     @Override
     public void onBindViewHolder(@NonNull WeightHolder holder, int position) {
+        // Gets the current weight that is about to be displayed.
         Weight currentWeight = getItem(position);
 
+        // Sets up the date in the list item view.
         setDate(holder, currentWeight.getDate());
+
+        // Sets up the colors in the list item view.
         setColor(holder);
 
+        // Sets up the weight in the list item view.
         setWeight(holder, currentWeight);
     }
 
     private void setColor(@NonNull WeightHolder holder) {
-        if (shouldBeCyan)
-            holder.weight_textview.setTextColor(Color.parseColor(MyColors.MY_BLUE));
+        if (shouldBeBlue)
+            holder.weight_textview.setTextColor(myResources.getBlue());
         else
-            holder.weight_textview.setTextColor(Color.parseColor(MyColors.MY_PURPLE));
+            holder.weight_textview.setTextColor(myResources.getPurple());
 
-        shouldBeCyan = !shouldBeCyan;
+        shouldBeBlue = !shouldBeBlue;
     }
 
+
+    // Sets up the date in the provided list view holder
     private void setDate(@NonNull WeightHolder holder, String date) {
         String[] currentDate = date.split("-");
 
-        String currentMonth = MONTHS[Integer.parseInt(currentDate[1]) - 1];
+        String currentMonth = months[Integer.parseInt(currentDate[1]) - 1];
         String currentDay = currentDate[2];
 
         holder.day_month_textview.setText(currentDay + " of " + currentMonth);
         holder.year_textview.setText(currentDate[0]);
     }
 
+
+    // Sets up the weight in the provided list view holder
     private void setWeight(@NonNull WeightHolder holder, Weight currentWeight) {
         if (shouldBeKilograms) {
             double weight_kg = currentWeight.getWeight_kg();
             weight_kg = round(weight_kg, 1);
 
             holder.weight_textview.setText(weight_kg + " kg");
-        }
-        else {
+        } else {
             double weight_lbs = currentWeight.getWeight_lbs();
             weight_lbs = round(weight_lbs, 1);
 
@@ -109,8 +129,11 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         }
     }
 
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+
+    // Method to help round the double values.
+    private static double round(double value, int places) {
+        if (places < 0)
+            throw new IllegalArgumentException();
 
         long factor = (long) Math.pow(10, places);
         value = value * factor;
@@ -119,6 +142,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
     }
 
 
+    // The list item view.
     class WeightHolder extends RecyclerView.ViewHolder {
         private TextView day_month_textview;
         private TextView year_textview;

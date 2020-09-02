@@ -14,7 +14,7 @@
         android:fontFamily="@font/oswald_bold"
         android:text="Home"
         android:textAlignment="center"
-        android:textColor="@color/neon_purple"
+        android:textColor="@color/purple"
         android:textSize="24sp" />
 
 

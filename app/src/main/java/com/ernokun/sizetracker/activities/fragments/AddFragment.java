@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -131,6 +130,7 @@ public class AddFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
         this.listener = null;
     }
 }
