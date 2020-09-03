@@ -36,7 +36,20 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     // How many weights can be shown on the graph.
-    private final int MAX_WEIGHT_AMOUNT = 12;
+    private static final int MAX_WEIGHT_AMOUNT = 12;
+
+
+    // Reference to the resource object.
+    private MyResources myResources;
+
+
+    // TODO Makes this variable get its' value from shared preferences.
+    // Should the data be currently shown in kilograms or lbs.
+    private boolean shouldbeKg = true;
+
+
+    // Gets data from repository and displays it in recycler view.
+    private WeightViewModel weightViewModel;
 
 
     // Recycler view and adapter:
@@ -44,22 +57,16 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private WeightAdapter weightAdapter;
 
-    // Gets data from repository and displays it in recycler view.
-    private WeightViewModel weightViewModel;
 
     // The graph.
     private LineChart graph;
 
-    // TODO Makes this variable get its' value from shared preferences.
-    // Should the data be currently shown in kilograms or lbs.
-    private boolean shouldBeKilograms = true;
+
+    // -----------------------------------------------------------------------------------
 
 
-    // Reference to the resource object.
-    private MyResources myResources;
-
-
-    // Used to pass reference to resource object/
+    // Constructor that is used to
+    // pass the MyResources object reference from MainActivity
     public HomeFragment(MyResources myResources) {
         this.myResources = myResources;
     }
@@ -73,7 +80,7 @@ public class HomeFragment extends Fragment {
         recyclerView = v.findViewById(R.id.weight_recycler_view_id);
         graph = v.findViewById(R.id.graph_id);
 
-        prepareRecyclerView(shouldBeKilograms);
+        prepareRecyclerView(shouldbeKg);
         prepareViewModel();
         prepareSwipeToDelete();
 
@@ -161,7 +168,7 @@ public class HomeFragment extends Fragment {
             Weight weight = weightList.get(weightCount - i);
 
             // What weight unit should be used.
-            double weightAmount = (shouldBeKilograms) ?
+            double weightAmount = (shouldbeKg) ?
                     weight.getWeight_kg() : weight.getWeight_lbs();
 
             // Creating the data point for the graph.
@@ -262,15 +269,15 @@ public class HomeFragment extends Fragment {
     }
 
 
-    // Gets called from options.
-    // Changes kgs to lbs and vice versa.
+    // Gets called from by options through MainActivity,
+    // changes kgs to lbs and vice versa.
     public void changeUnit() {
-        shouldBeKilograms = !shouldBeKilograms;
+        shouldbeKg = !shouldbeKg;
     }
 
 
-    // Gets called from options.
-    // Saves weight data to a file.
+    // Gets called from by options through MainActivity,
+    // saves weight data to a file.
     public void saveWeightsToFile(String filePath) {
         List<Weight> currentList = weightAdapter.getCurrentList();
 
@@ -279,6 +286,7 @@ public class HomeFragment extends Fragment {
 
 
     // Class for saving data to files.
+    // TODO change to AsyncTask later.
     private static class MyFileSaver {
 
         private MyFileSaver() {

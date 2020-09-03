@@ -16,4 +16,9 @@
         <item>December</item>
     </string-array>
 
+    <string-array name="weight_units">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+
 </resources>

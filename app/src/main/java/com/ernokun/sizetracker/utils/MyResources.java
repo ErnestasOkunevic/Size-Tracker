@@ -11,6 +11,9 @@ public class MyResources {
     // Array of months.
     private String[] months;
 
+    // Array of weight units (kg, lbs)
+    private String[] weight_units;
+
     // Colors
     private int white;
     private int dark;
@@ -28,6 +31,7 @@ public class MyResources {
 
     private void setupStringsFromResources() {
         months = resources.getStringArray(R.array.months);
+        weight_units = resources.getStringArray(R.array.weight_units);
     }
 
     private void setupColorsFromResources() {
@@ -41,6 +45,10 @@ public class MyResources {
 
     public String[] getMonths() {
         return months;
+    }
+
+    public String[] getWeight_units() {
+        return weight_units;
     }
 
     public int getWhite() {

@@ -24,17 +24,27 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
     // The bottom navigation bar.
     private BottomNavigationView bottomNav;
 
+
+    // Fragments
     private AddFragment addFragment;
     private HomeFragment homeFragment;
     private SettingsFragment settingsFragment;
 
+
+    // Used to access and modify the weight database.
     private WeightViewModel weightViewModel;
 
-    // Used for saving all of the weights to a file.
+
+    // Path for saving all of the weights to a file.
     private String filePath;
+
 
     // Resource reference for the fragments and their components.
     private MyResources myResources;
+
+
+    // -----------------------------------------------------------------------------------
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,15 +89,18 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
                         selectedFragment = homeFragment;
                         break;
 
+
                     case R.id.nav_add:
-                        addFragment = new AddFragment();
+                        if (addFragment == null)
+                            addFragment = new AddFragment(myResources);
 
                         selectedFragment = addFragment;
                         break;
 
+
                     case R.id.nav_settings:
                         if (settingsFragment == null)
-                            settingsFragment = new SettingsFragment();
+                            settingsFragment = new SettingsFragment(myResources);
 
                         selectedFragment = settingsFragment;
                         break;
@@ -133,14 +146,23 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
     }
 
 
+    // Implemented interface for SettingsFragment
     @Override
     public void changeSetting(String command) {
         switch (command) {
+            // When the change weight unit button is pressed.
             case SettingsFragment.COMMAND_CHANGE_UNIT:
+                // Shows a toast message to inform of weight unit change.
+                showToast("Weight unit changed");
+
+                // Create new adapter with the corresponding weight unit.
                 homeFragment.changeUnit();
                 break;
+
+
+            // When the save weight to file button is pressed.
             case SettingsFragment.COMMAND_SAVE_WEIGHTS_TO_FILE:
-                // Shows a toast with the filePath.
+                // Shows a toast message with the filePath for the saved file.
                 showToast("Saved to: " + filePath);
 
                 // Saves all weights to the given filePath.
@@ -150,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
     }
 
 
+    // Used to show messages to the user.
     private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
