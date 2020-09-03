@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ernokun.sizetracker.R;
-import com.ernokun.sizetracker.entities.Weight;
+import com.ernokun.sizetracker.room.entities.Weight;
 import com.ernokun.sizetracker.utils.MyResources;
 
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.ernokun.sizetracker.databases;
+package com.ernokun.sizetracker.room.databases;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -9,8 +9,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.ernokun.sizetracker.daos.WeightDao;
-import com.ernokun.sizetracker.entities.Weight;
+import com.ernokun.sizetracker.room.daos.WeightDao;
+import com.ernokun.sizetracker.room.entities.Weight;
 
 @Database(entities = {Weight.class}, version = 1)
 public abstract class WeightDatabase extends RoomDatabase {
@@ -46,7 +46,7 @@ public abstract class WeightDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            //
+            // code
             return null;
         }
     }

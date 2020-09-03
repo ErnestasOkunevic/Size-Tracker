@@ -1,4 +1,4 @@
-package com.ernokun.sizetracker.daos;
+package com.ernokun.sizetracker.room.daos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.ernokun.sizetracker.entities.Weight;
+import com.ernokun.sizetracker.room.entities.Weight;
 
 import java.util.List;
 

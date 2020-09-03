@@ -1,4 +1,4 @@
-package com.ernokun.sizetracker.viewmodels;
+package com.ernokun.sizetracker.room.viewmodels;
 
 import android.app.Application;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.ernokun.sizetracker.entities.Weight;
-import com.ernokun.sizetracker.repositories.WeightRepository;
+import com.ernokun.sizetracker.room.entities.Weight;
+import com.ernokun.sizetracker.room.repositories.WeightRepository;
 
 import java.util.List;
 

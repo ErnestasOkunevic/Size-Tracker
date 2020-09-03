@@ -1,6 +1,5 @@
-package com.ernokun.sizetracker.recycleradapters;
+package com.ernokun.sizetracker.utils;
 
-import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +12,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ernokun.sizetracker.R;
 
-import com.ernokun.sizetracker.entities.Weight;
-import com.ernokun.sizetracker.utils.MyResources;
+import com.ernokun.sizetracker.room.entities.Weight;
 
-
+/***
+ * RecyclerView adapter for the list of weights in HomeFragment.
+ */
 public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolder> {
+
     // The months of the year.
     public static String[] months;
+
 
     // What color should the weight be printed in (blue or purple).
     private boolean shouldBeBlue;
 
+
     // Should the weight be printed in kilograms or lbs.
     private boolean shouldBeKilograms;
 
+
     // Reference to resource class object.
     private MyResources myResources;
+
 
     // Used in ListAdapter, is needed for the list adapter to be able to recognize if the list has
     // changed or not.
@@ -47,6 +52,11 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
     };
 
 
+    // -----------------------------------------------------------------------------------
+
+
+    // Passed in reference to the MyResources object and a boolean which represents whether
+    // the weights should be shown as kg or lbs.
     public WeightAdapter(boolean shouldBeKilograms, MyResources myResources) {
         super(DIFF_CALLBACK);
 
@@ -77,6 +87,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         return new WeightHolder(itemView);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull WeightHolder holder, int position) {
         // Gets the current weight that is about to be displayed.
@@ -91,6 +102,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
         // Sets up the weight in the list item view.
         setWeight(holder, currentWeight);
     }
+
 
     private void setColor(@NonNull WeightHolder holder) {
         if (shouldBeBlue)
@@ -143,7 +155,7 @@ public class WeightAdapter extends ListAdapter<Weight, WeightAdapter.WeightHolde
 
 
     // The list item view.
-    class WeightHolder extends RecyclerView.ViewHolder {
+    static class WeightHolder extends RecyclerView.ViewHolder {
         private TextView day_month_textview;
         private TextView year_textview;
         private TextView weight_textview;

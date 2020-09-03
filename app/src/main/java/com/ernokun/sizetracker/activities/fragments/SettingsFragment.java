@@ -13,11 +13,15 @@ import androidx.fragment.app.Fragment;
 
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.utils.MyResources;
+import com.ernokun.sizetracker.utils.MySharedPreferences;
+
+import java.util.Objects;
 
 public class SettingsFragment extends Fragment {
 
     // All available commands for the SettingsListener interface.
-    public static final String COMMAND_CHANGE_UNIT = "CHANGE_WEIGHT_UNIT";
+    public static final String COMMAND_CHANGE_UNIT_TO_KG = "COMMAND_CHANGE_UNIT_TO_KG";
+    public static final String COMMAND_CHANGE_UNIT_TO_LBS = "COMMAND_CHANGE_UNIT_TO_LBS";
     public static final String COMMAND_SAVE_WEIGHTS_TO_FILE = "COMMAND_SAVE_WEIGHTS_TO_FILE";
 
 
@@ -35,16 +39,15 @@ public class SettingsFragment extends Fragment {
     private SettingsListener listener;
 
 
-    // TODO enhance with shared preferences
     // Should the change weight unit show kg or lbs.
-    private static String current_button_text;
+    private static String current_unit;
 
 
     // Kgs, lbs.
     private String[] weight_units;
 
 
-    //-----------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------
 
 
     // Constructor that is used to
@@ -73,8 +76,6 @@ public class SettingsFragment extends Fragment {
 
 
         // If the button currently has no text, set it to kg by default.
-        // TODO fix later with shared prefs to not be set to default value every time
-        //  the app is launched.
         setupDefaultUnit();
 
         return v;
@@ -100,9 +101,12 @@ public class SettingsFragment extends Fragment {
         changeWeightUnitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.changeSetting(COMMAND_CHANGE_UNIT);
+                if (current_unit.equals(weight_units[0])) // kg
+                    listener.changeSetting(COMMAND_CHANGE_UNIT_TO_KG);
+                else                                      // lbs
+                    listener.changeSetting(COMMAND_CHANGE_UNIT_TO_LBS);
 
-                changeButtonText(changeWeightUnitButton.getText().toString());
+                changeWeightUnit(changeWeightUnitButton.getText().toString());
             }
         });
 
@@ -119,25 +123,31 @@ public class SettingsFragment extends Fragment {
 
     // Sets the default weight unit.
     private void setupDefaultUnit() {
+        // Loads unit from shared preferences.
+        current_unit = MySharedPreferences.getWeight_unit(Objects.requireNonNull(getContext()));
+
         // If no weight unit is selected:
-        if (current_button_text == null)
-            current_button_text = weight_units[0];
+        if (current_unit == null)
+            current_unit = weight_units[0];
 
         // Sets the default weight unit to be shown on the button.
-        changeWeightUnitButton.setText(current_button_text);
+        changeWeightUnitButton.setText(current_unit);
     }
 
 
     // Changes weight unit from kg to lbs and vice versa.
-    private void changeButtonText(String currentText) {
+    private void changeWeightUnit(String currentText) {
         // if currently the weight unit is set to kg:
         if (currentText.equals(weight_units[0]))
-            current_button_text = weight_units[1]; // lbs
+            current_unit = weight_units[1]; // lbs
         else
-            current_button_text = weight_units[0]; // kg
+            current_unit = weight_units[0]; // kg
+
+        // Save unit to shared preferences.
+        MySharedPreferences.saveWeight_unit(Objects.requireNonNull(getContext()), current_unit);
 
         // Sets the new weight unit to be shown on the button.
-        changeWeightUnitButton.setText(current_button_text);
+        changeWeightUnitButton.setText(current_unit);
     }
 
 

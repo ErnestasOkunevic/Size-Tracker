@@ -1,13 +1,13 @@
-package com.ernokun.sizetracker.repositories;
+package com.ernokun.sizetracker.room.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.ernokun.sizetracker.daos.WeightDao;
-import com.ernokun.sizetracker.databases.WeightDatabase;
-import com.ernokun.sizetracker.entities.Weight;
+import com.ernokun.sizetracker.room.daos.WeightDao;
+import com.ernokun.sizetracker.room.databases.WeightDatabase;
+import com.ernokun.sizetracker.room.entities.Weight;
 
 import java.util.List;
 

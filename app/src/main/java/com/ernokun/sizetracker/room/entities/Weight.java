@@ -1,4 +1,4 @@
-package com.ernokun.sizetracker.entities;
+package com.ernokun.sizetracker.room.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

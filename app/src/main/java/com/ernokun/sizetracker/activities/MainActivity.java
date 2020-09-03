@@ -14,9 +14,9 @@ import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.activities.fragments.AddFragment;
 import com.ernokun.sizetracker.activities.fragments.HomeFragment;
 import com.ernokun.sizetracker.activities.fragments.SettingsFragment;
-import com.ernokun.sizetracker.entities.Weight;
+import com.ernokun.sizetracker.room.entities.Weight;
 import com.ernokun.sizetracker.utils.MyResources;
-import com.ernokun.sizetracker.viewmodels.WeightViewModel;
+import com.ernokun.sizetracker.room.viewmodels.WeightViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements AddFragment.AddFragmentListener, SettingsFragment.SettingsListener {
@@ -59,12 +59,14 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
                 ViewModelProvider.AndroidViewModelFactory.getInstance(
                         MainActivity.this.getApplication())).get(WeightViewModel.class);
 
-        // Self-explanatory.
-        prepareBottomNavigationBar();
-
         // Sets the filePath for the "Save to file" functionality.
         filePath = getExternalFilesDir(Environment.getDataDirectory().getAbsolutePath()).getAbsolutePath() + "/saved_weights.txt";
 
+        // Sets up the bottom navigation bar.
+        prepareBottomNavigationBar();
+
+        // Opens the home fragment by default.
+        openHomeFragment();
     }
 
 
@@ -118,9 +120,6 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
                 return true;
             }
         });
-
-        // open the home fragment by default.
-        openHomeFragment();
     }
 
 
@@ -151,12 +150,20 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
     public void changeSetting(String command) {
         switch (command) {
             // When the change weight unit button is pressed.
-            case SettingsFragment.COMMAND_CHANGE_UNIT:
+            case SettingsFragment.COMMAND_CHANGE_UNIT_TO_KG:
                 // Shows a toast message to inform of weight unit change.
-                showToast("Weight unit changed");
+                showToast("Weight unit changed to kg");
 
                 // Create new adapter with the corresponding weight unit.
-                homeFragment.changeUnit();
+                homeFragment.changeUnit(true);
+                break;
+
+            case SettingsFragment.COMMAND_CHANGE_UNIT_TO_LBS:
+                // Shows a toast message to inform of weight unit change.
+                showToast("Weight unit changed to lbs");
+
+                // Create new adapter with the corresponding weight unit.
+                homeFragment.changeUnit(false);
                 break;
 
 

@@ -17,10 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ernokun.sizetracker.R;
-import com.ernokun.sizetracker.entities.Weight;
-import com.ernokun.sizetracker.recycleradapters.WeightAdapter;
+import com.ernokun.sizetracker.room.entities.Weight;
+import com.ernokun.sizetracker.utils.MySharedPreferences;
+import com.ernokun.sizetracker.utils.WeightAdapter;
 import com.ernokun.sizetracker.utils.MyResources;
-import com.ernokun.sizetracker.viewmodels.WeightViewModel;
+import com.ernokun.sizetracker.room.viewmodels.WeightViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -32,6 +33,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -43,9 +45,8 @@ public class HomeFragment extends Fragment {
     private MyResources myResources;
 
 
-    // TODO Makes this variable get its' value from shared preferences.
     // Should the data be currently shown in kilograms or lbs.
-    private boolean shouldbeKg = true;
+    private boolean shouldbeKg;
 
 
     // Gets data from repository and displays it in recycler view.
@@ -79,6 +80,8 @@ public class HomeFragment extends Fragment {
 
         recyclerView = v.findViewById(R.id.weight_recycler_view_id);
         graph = v.findViewById(R.id.graph_id);
+
+        setupWeightUnit();
 
         prepareRecyclerView(shouldbeKg);
         prepareViewModel();
@@ -114,6 +117,19 @@ public class HomeFragment extends Fragment {
                 setupGraph();
             }
         });
+    }
+
+
+    // Checks whether the weight unit should set to kg or lbs.
+    private void setupWeightUnit() {
+        String[] weight_units = myResources.getWeight_units();
+
+        String weight_unit = MySharedPreferences.getWeight_unit(Objects.requireNonNull(getContext()));
+
+        if (weight_unit == null)
+            shouldbeKg = true;
+        else
+            shouldbeKg = weight_unit.equals(weight_units[0]);
     }
 
 
@@ -271,8 +287,8 @@ public class HomeFragment extends Fragment {
 
     // Gets called from by options through MainActivity,
     // changes kgs to lbs and vice versa.
-    public void changeUnit() {
-        shouldbeKg = !shouldbeKg;
+    public void changeUnit(boolean shouldbeKg) {
+        this.shouldbeKg = shouldbeKg;
     }
 
 
