@@ -149,19 +149,15 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
     @Override
     public void changeSetting(String command) {
         switch (command) {
-            // When the change weight unit button is pressed.
+            // When the change weight unit button is pressed for kgs.
             case SettingsFragment.COMMAND_CHANGE_UNIT_TO_KG:
-                // Shows a toast message to inform of weight unit change.
-                showToast("Weight unit changed to kg");
-
                 // Create new adapter with the corresponding weight unit.
                 homeFragment.changeUnit(true);
                 break;
 
-            case SettingsFragment.COMMAND_CHANGE_UNIT_TO_LBS:
-                // Shows a toast message to inform of weight unit change.
-                showToast("Weight unit changed to lbs");
 
+            // When the change weight unit button is pressed for lbs.
+            case SettingsFragment.COMMAND_CHANGE_UNIT_TO_LBS:
                 // Create new adapter with the corresponding weight unit.
                 homeFragment.changeUnit(false);
                 break;
