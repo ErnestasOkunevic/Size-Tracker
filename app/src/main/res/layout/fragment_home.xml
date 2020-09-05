@@ -18,7 +18,7 @@
         android:textSize="24sp" />
 
 
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/graph_id"
         android:layout_width="match_parent"
         android:layout_height="200dp"

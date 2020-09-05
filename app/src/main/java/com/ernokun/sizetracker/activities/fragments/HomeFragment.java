@@ -22,11 +22,12 @@ import com.ernokun.sizetracker.utils.MySharedPreferences;
 import com.ernokun.sizetracker.utils.WeightAdapter;
 import com.ernokun.sizetracker.utils.MyResources;
 import com.ernokun.sizetracker.room.viewmodels.WeightViewModel;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -60,7 +61,7 @@ public class HomeFragment extends Fragment {
 
 
     // The graph.
-    private LineChart graph;
+    private BarChart graph;
 
 
     // -----------------------------------------------------------------------------------
@@ -148,13 +149,14 @@ public class HomeFragment extends Fragment {
 
 
         // The created data points for the graph.
-        List<Entry> entries = getEntries(weightList, weightCount);
+        List<BarEntry> entries = getEntries(weightList, weightCount);
 
 
-        // The bundled data set for the graph.
-        LineData lineData = getLineDataSet(entries, weightCount);
+        BarData barData = getBarData(entries, weightCount);
 
-        graph.setData(lineData);
+        barData.setBarWidth(0.5f);
+
+        graph.setData(barData);
 
 
         // Setting description for the graph.
@@ -173,9 +175,9 @@ public class HomeFragment extends Fragment {
 
 
     // Creates data points for the graph.
-    private List<Entry> getEntries(List<Weight> weightList, int weightCount) {
+    private List<BarEntry> getEntries(List<Weight> weightList, int weightCount) {
         // The data points for the graph.
-        List<Entry> entries = new ArrayList<>();
+        List<BarEntry> entries = new ArrayList<>();
 
         // Add the last twelve (or less) weights to the graph.
         for (int i = 1; i <= weightCount; i++) {
@@ -188,7 +190,7 @@ public class HomeFragment extends Fragment {
                     weight.getWeight_kg() : weight.getWeight_lbs();
 
             // Creating the data point for the graph.
-            Entry entry = new Entry(i, (float) weightAmount);
+            BarEntry entry = new BarEntry(i, (float) weightAmount);
 
             // Adding the data point to the data point list.
             entries.add(entry);
@@ -200,7 +202,8 @@ public class HomeFragment extends Fragment {
 
     // Sets the description for the graph.
     private Description getDescription(int weightCount) {
-        String description_text = "You weighed yourself " + weightCount + " times";
+//        String description_text = "You weighed yourself " + weightCount + " times";
+        String description_text = "";
 
         Description description = new Description();
 
@@ -212,19 +215,19 @@ public class HomeFragment extends Fragment {
 
 
     // Bundles up data points and creates a data set for the graph.
-    private LineData getLineDataSet(List<Entry> entries, int usedWeightCount) {
+    private BarData getBarData (List<BarEntry> entries, int usedWeightCount) {
         // Creating the data set.
-        LineDataSet dataSet = new LineDataSet(entries, ("Your latest " + usedWeightCount + " sizes"));
+        BarDataSet dataSet = new BarDataSet(entries, ("Your latest " + usedWeightCount + " sizes"));
 
         // Customising the look of the data set.
         dataSet.setColor(myResources.getBlue());
-        dataSet.setCircleColor(myResources.getBlack());
+
         dataSet.setValueTextColor(myResources.getWhite());
         dataSet.setHighLightColor(myResources.getPurple());
-        dataSet.setCircleHoleColor(myResources.getWhite());
+
 
         // Bundling up the data and returning it.
-        return new LineData(dataSet);
+        return new BarData(dataSet);
     }
 
 
@@ -249,6 +252,8 @@ public class HomeFragment extends Fragment {
         graph.setDrawBorders(true);
         graph.setBorderColor(myResources.getBlack());
         graph.setBorderWidth(2);
+
+        graph.setFitBars(true);
     }
 
 
