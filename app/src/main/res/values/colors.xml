@@ -8,6 +8,8 @@
     <color name="purple">#973EDF</color>
     <color name="white">#EBEAEA</color>
     <color name="black">#000000</color>
-    <color name="dark">#434343</color>
+    <color name="grey">#434343</color>
+    <color name="light_grey">#515151</color>
+    <color name="dark_grey">#282828</color>
 
 </resources>

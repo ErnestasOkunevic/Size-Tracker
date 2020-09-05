@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
-        android:background="@drawable/fragment_name_background"
+        android:background="@drawable/bg_fragment_name"
         android:fontFamily="@font/oswald_bold"
         android:text="Settings"
         android:textAlignment="center"
-        android:textColor="@color/purple"
+        android:textColor="@color/white"
         android:textSize="24dp" />
 
     <ImageView

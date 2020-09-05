@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
         int weightCount = weightList.size();
 
 
-        // Only the newest 12 weights should be shown on the graph.
+        // Only the newest MAX_WEIGHT_AMOUNT number of weights should be shown on the graph.
         if (weightCount > MAX_WEIGHT_AMOUNT)
             weightCount = MAX_WEIGHT_AMOUNT;
 
@@ -220,7 +220,7 @@ public class HomeFragment extends Fragment {
         dataSet.setColor(myResources.getBlue());
         dataSet.setCircleColor(myResources.getBlack());
         dataSet.setValueTextColor(myResources.getWhite());
-        dataSet.setHighLightColor(myResources.getBlack());
+        dataSet.setHighLightColor(myResources.getPurple());
         dataSet.setCircleHoleColor(myResources.getWhite());
 
         // Bundling up the data and returning it.
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment {
         graph.setNoDataTextColor(myResources.getWhite());
 
         graph.setDrawGridBackground(true);
-        graph.setGridBackgroundColor(myResources.getDark());
+        graph.setGridBackgroundColor(myResources.getBlack());
 
         graph.setDrawBorders(true);
         graph.setBorderColor(myResources.getBlack());

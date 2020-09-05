@@ -42,7 +42,7 @@ public class MyResources {
 
     private void setupColorsFromResources() {
         white = resources.getColor(R.color.white, null);
-        dark = resources.getColor(R.color.dark, null);
+        dark = resources.getColor(R.color.grey, null);
         purple = resources.getColor(R.color.purple, null);
         blue = resources.getColor(R.color.blue, null);
         black = resources.getColor(R.color.black, null);
