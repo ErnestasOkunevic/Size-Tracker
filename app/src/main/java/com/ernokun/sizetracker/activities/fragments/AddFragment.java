@@ -1,14 +1,11 @@
 package com.ernokun.sizetracker.activities.fragments;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -104,6 +101,7 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
+
                 datePicker.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "date picker");
             }
         });
