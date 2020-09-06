@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment;
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.room.entities.Weight;
 import com.ernokun.sizetracker.utils.MyResources;
+import com.ernokun.sizetracker.utils.MySharedPreferences;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class AddFragment extends Fragment {
 
@@ -35,7 +37,6 @@ public class AddFragment extends Fragment {
 
     // Buttons.
     private Button saveButton;
-    private Button weightUnitButton;
 
 
     // Listener that is implemented in MainActivity
@@ -86,7 +87,6 @@ public class AddFragment extends Fragment {
         dateEditText = v.findViewById(R.id.date_edittext_id);
 
         saveButton = v.findViewById(R.id.save_button_id);
-        weightUnitButton = v.findViewById(R.id.kg_lbs_selection_button_id);
     }
 
 
@@ -96,12 +96,10 @@ public class AddFragment extends Fragment {
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Currently only the current date is availabe...
+                // Currently only the current date is available...
                 setupCurrentDate();
 
                 // TODO make custom dates available via use of the calendar
-                // code
-                // code
             }
         });
 
@@ -110,46 +108,44 @@ public class AddFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get the inputted weight and date.
-                String weightText = weightEditText.getText().toString();
-                String date = dateEditText.getText().toString();
-
-                // Check if the values needed arent't empty.
-                if (weightText.equals("") || date.equals(""))
-                    return;
-
-                // Both weight units are needed in order to save a weight.
-                double weight_kg;
-                double weight_lbs;
-
-                // If the weight inputted is in kilograms.
-                if (isGivenWeightInKilograms()) {
-                    weight_kg = Double.parseDouble(weightText);
-                    weight_lbs = weight_kg * 2.2;
-                } else { // the weight inputted is in lbs.
-                    weight_lbs = Double.parseDouble(weightText);
-                    weight_kg = weight_lbs / 2.2;
-                }
-
-                // Creating the new weight with the data given.
-                Weight weight = new Weight(weight_kg, weight_lbs, date);
-
-                // Call the method in MainActivity.
-                listener.onWeightAdded(weight);
+                saveWeight();
             }
         });
+    }
 
 
-        // What happens when the weight unit button is pressed.
-        weightUnitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (weight_units[0].equals(weightUnitButton.getText().toString()))
-                    weightUnitButton.setText(weight_units[1]);
-                else
-                    weightUnitButton.setText(weight_units[0]);
+    // Saves the inputted weight in the database.
+    private void saveWeight() {
+        // Get the inputted weight and date.
+        String weightText = weightEditText.getText().toString();
+        String date = dateEditText.getText().toString();
+
+        // Check if the values needed arent't empty.
+        if (weightText.equals("") || date.equals(""))
+            return;
+
+        // Both weight units are needed in order to save a weight.
+        double weight_kg;
+        double weight_lbs;
+
+        try {
+            // If the weight inputted is in kilograms.
+            if (isGivenWeightInKilograms()) {
+                weight_kg = Double.parseDouble(weightText);
+                weight_lbs = weight_kg * 2.2;
+            } else { // the weight inputted is in lbs.
+                weight_lbs = Double.parseDouble(weightText);
+                weight_kg = weight_lbs / 2.2;
             }
-        });
+        }
+        catch (Exception e) {
+            return;
+        }
+        // Creating the new weight with the data given.
+        Weight weight = new Weight(weight_kg, weight_lbs, date);
+
+        // Call the method in MainActivity.
+        listener.onWeightAdded(weight);
     }
 
 
@@ -163,11 +159,14 @@ public class AddFragment extends Fragment {
     }
 
 
-    // Returns whether the weight unit button is set to kilograms or lbs.
+    // Returns whether the weight unit in settings is set to kilograms or lbs.
     private boolean isGivenWeightInKilograms() {
-        // True - set to kg
-        // False - set to lbs
-        boolean setToKg = weight_units[0].equals(weightUnitButton.getText().toString());
+        // Gets the currently set weight unit.
+        String weight_unit = MySharedPreferences.getWeight_unit(Objects.requireNonNull(getContext()));
+
+        // weight_units[0] - kg,
+        // weight_units[1] - lbs.
+        boolean setToKg = weight_units[0].equals(weight_unit);
 
         return setToKg;
     }

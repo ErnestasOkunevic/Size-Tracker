@@ -93,8 +93,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.AddFr
 
 
                     case R.id.nav_add:
-                        if (addFragment == null)
-                            addFragment = new AddFragment(myResources);
+                        addFragment = new AddFragment(myResources);
 
                         selectedFragment = addFragment;
                         break;
