@@ -21,9 +21,10 @@
 
     <ImageView
         android:id="@+id/logo_id"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="172dp"
+        android:layout_height="136dp"
         android:layout_below="@id/add_fragment_textview_id"
+        android:layout_marginBottom="75dp"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/ic_logo" />
 
@@ -35,7 +36,6 @@
         android:layout_alignRight="@id/logo_id"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="50dp"
         android:ems="10"
         android:fontFamily="@font/oswald_light"
         android:hint="Weight"
@@ -51,7 +51,7 @@
         android:layout_below="@id/weight_edittext_id"
         android:layout_alignLeft="@id/weight_edittext_id"
         android:layout_alignRight="@id/weight_edittext_id"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:focusable="false"
         android:fontFamily="@font/oswald_light"
         android:hint="dd/mm/yy"
