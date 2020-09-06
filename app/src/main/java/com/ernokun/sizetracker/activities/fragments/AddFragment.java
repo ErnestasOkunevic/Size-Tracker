@@ -1,23 +1,30 @@
 package com.ernokun.sizetracker.activities.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.ernokun.sizetracker.R;
 import com.ernokun.sizetracker.room.entities.Weight;
+import com.ernokun.sizetracker.utils.DatePickerFragment;
 import com.ernokun.sizetracker.utils.MyResources;
 import com.ernokun.sizetracker.utils.MySharedPreferences;
 
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class AddFragment extends Fragment {
@@ -69,7 +76,7 @@ public class AddFragment extends Fragment {
         setupResources();
         setupViews(v);
         setupOnClickListeners();
-        setupCurrentDate();
+        setupDefaultDate();
 
         return v;
     }
@@ -96,10 +103,8 @@ public class AddFragment extends Fragment {
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Currently only the current date is available...
-                setupCurrentDate();
-
-                // TODO make custom dates available via use of the calendar
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "date picker");
             }
         });
 
@@ -111,6 +116,14 @@ public class AddFragment extends Fragment {
                 saveWeight();
             }
         });
+    }
+
+
+    // When a date is picked in the calendar.
+    public void setDateEditText(Calendar calendar) {
+        String currentDateString = DateFormat.getDateInstance().format(calendar.getTime());
+
+        dateEditText.setText(currentDateString);
     }
 
 
@@ -137,8 +150,7 @@ public class AddFragment extends Fragment {
                 weight_lbs = Double.parseDouble(weightText);
                 weight_kg = weight_lbs / 2.2;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return;
         }
         // Creating the new weight with the data given.
@@ -150,7 +162,7 @@ public class AddFragment extends Fragment {
 
 
     // Sets the current date as the default.
-    private void setupCurrentDate() {
+    private void setupDefaultDate() {
         // Get the current date.
         LocalDate date = LocalDate.now();
 
