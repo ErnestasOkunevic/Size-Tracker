@@ -1,14 +1,10 @@
-## This is still a work in progress project !
-
 # Size Tracker
 
-### Author: Ernestas Okunevič
-
 ## App Idea:
-** This is a weight tracking app that keeps track of the users weight and has a
-graph to show their weight changes.**
+** This is a weight tracking app.**
 
 ### Funtionality
-* Add weight - allows the addition of a new weight (currently always saves the current date).
-* Delete weight - swipe weight to delete it. Triggers a pop-up message that needs confirmation for deletion.
-* Show weight in kilograms or lbs.
+* Add weight - allows the addition of a new weight in either kilograms or lbs and a custom date;
+* Delete weight - swipe the weight left to delete it. Triggers a pop-up message that needs confirmation for deletion;
+* Show saved weights in kilograms or lbs;
+* Save all weights in a .txt file (as kg);
