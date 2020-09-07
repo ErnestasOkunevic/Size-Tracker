@@ -1,7 +1,7 @@
 # Size Tracker
 
 ## App Idea:
-** This is a weight tracking app.**
+**This is a weight tracking app.**
 
 ### Funtionality
 * Add weight - allows the addition of a new weight in either kilograms or lbs and a custom date;
