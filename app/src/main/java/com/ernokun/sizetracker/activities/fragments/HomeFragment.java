@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     private static final int MAX_WEIGHT_AMOUNT = 12;
 
 
+
     // Reference to the resource object.
     private MyResources myResources;
 
@@ -282,7 +283,12 @@ public class HomeFragment extends Fragment {
                         })
 
                         // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                weightAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                            }
+                        })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
