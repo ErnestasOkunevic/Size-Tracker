@@ -143,6 +143,9 @@ public class HomeFragment extends Fragment {
         // How many weight records currently exist in the database.
         int weightCount = weightList.size();
 
+        if (weightCount <= 0)
+            return;
+
 
         // Only the newest MAX_WEIGHT_AMOUNT number of weights should be shown on the graph.
         if (weightCount > MAX_WEIGHT_AMOUNT)
